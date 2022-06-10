@@ -1,6 +1,8 @@
 require 'open-uri'
 
 class Dictionary
+  attr_reader :words
+
   def initialize(shortest = 5, longest = 12)
     @words = retrieve_default_words.select { |word| word.length.between?(shortest, longest) }
   end

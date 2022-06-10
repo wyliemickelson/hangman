@@ -10,9 +10,17 @@ class Board
     @remaining_letters = ('a'..'z').to_a
     @correct_letters = []
 
-    #testing
+    # # testing
     # @goal_word = "hello"
-    # @correct_letters = ["h", "l", "o"]
+    # @correct_letters = ["h", "e", "l", "o"]
+  end
+
+  def add_correct_letter(char)
+    @correct_letters << char
+  end
+
+  def remove_letter(char)
+    @remaining_letters.delete(char)
   end
 
   def display_goal_word
@@ -20,9 +28,8 @@ class Board
   end
 
   def display
-    puts "Available letters: #{remaining_letters.join(" ")}\n\n"
-    puts "To guess: #{display_goal_word}"
+    puts ">> Available letters: #{remaining_letters.join(" ")}\n\n"
+    puts ">> Remaining incorrect guesses: #{remaining_guesses}\n\n"
+    puts ">> To guess: #{display_goal_word}"
   end
 end
-
-Board.new.display
