@@ -3,7 +3,6 @@ require 'open-uri'
 class Dictionary
   def initialize(shortest = 5, longest = 12)
     @words = retrieve_default_words.select { |word| word.length.between?(shortest, longest) }
-    p @words
   end
 end
 
@@ -15,5 +14,3 @@ def retrieve_default_words
   end
   File.open(fname, "r") { |file| file.readlines(chomp: true) }
 end
-
-Dictionary.new
