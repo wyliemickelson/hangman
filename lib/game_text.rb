@@ -1,0 +1,34 @@
+module GameText
+  def goal_word_text
+    ">> The word was: #{board.goal_word}"
+  end
+
+  def new_game_prompt
+    ">> Press 1 for new game, 2 to load a previous save:"
+  end
+
+  def no_saves_text
+    ">> No save files found. Starting new game."
+  end
+
+  def turn_prompt
+    ">> Enter your letter guess or '1' to save and quit:"
+  end
+
+  def choose_save_prompt
+    ">> Choose a save file by entering its number:"
+  end
+
+  #invalid
+  def invalid_text
+    ">> Invalid input."
+  end
+
+  def invalid_start_input_text
+    ">> Invalid input. Enter a 1 or 2:"
+  end
+
+  def invalid_save_text
+    ">> Invalid input. Enter a number corresponding to one of the saves."
+  end
+end

@@ -1,10 +1,13 @@
-require_relative 'board.rb'
-require_relative 'input_validation.rb'
-require_relative 'save_states.rb'
+require_relative "board.rb"
+require_relative "input_validation.rb"
+require_relative "save_states.rb"
+require_relative "game_text.rb"
 
 class Game
   include Validation
   include SaveStates
+  include GameText
+
   attr_reader :current_action
   attr_accessor :board
 
@@ -14,40 +17,39 @@ class Game
   end
 
   def set_current_action(input)
-    action = input == '1' ? :save : :guess
+    action = (input == "1" ? :save : :guess)
     @current_action = action
-    puts @current_action.to_s
   end
 
   def game_over?
-    board.remaining_guesses == 0 || board.goal_word.chars.all? { |char| board.correct_letters.include?(char) }
+    board.rem_guesses == 0 || board.goal_word.chars.all? { |char| board.correct_letters.include?(char) }
   end
 
   def start
     unless new_game?
       if no_saves?
-        puts ">> No save files found. Starting new game.\n\n"
+        puts no_saves_text
       else
         display_saves
         pos = get_save_pos
         load_save(pos)
       end
     end
-    board.display
     until game_over?
+      board.display
       break if turn == false
     end
     calc_winner if game_over?
   end
 
   def calc_winner
-    puts "#{board.remaining_guesses == 0 ? ">> You lose!" : ">> You win!"}"
-    puts ">> The word was: #{board.goal_word}"
+    puts "#{board.rem_guesses == 0 ? ">> You lose!" : ">> You win!"}"
+    puts goal_word_text
   end
 
   def new_game?
-    puts ">> Press 1 for new game, 2 to load a previous save:"
-    get_start_input == '1'
+    puts new_game_prompt
+    get_start_input == "1"
   end
 
   def correct_char_guess?(char)
@@ -58,6 +60,23 @@ class Game
     word == board.goal_word
   end
 
+  def char_guess(player_input)
+    board.remove_rem_letter(player_input)
+    if correct_char_guess?(player_input)
+      board.add_correct_letter(player_input)
+    else
+      board.rem_guesses -= 1
+    end
+  end
+
+  def word_guess(player_input)
+    if correct_word_guess(player_input)
+      player_input.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
+    else
+      board.rem_guesses -= 1
+    end
+  end
+
   def turn
     player_input = get_turn_input
     set_current_action(player_input)
@@ -65,25 +84,14 @@ class Game
       save_current_game(board)
       return false
     elsif current_action == :guess
-      #check if guess is word or character
-      if player_input.length == 1
-        board.remove_rem_letter(player_input)
-        if correct_char_guess?(player_input)
-          board.add_correct_letter(player_input)
-        else
-          board.remaining_guesses -= 1
-        end
-      else
-        if correct_word_guess(player_input)
-          player_input.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
-        else
-          board.remaining_guesses -= 1
-        end
+      case guess_type = (player_input.length == 1 ? :char : :word)
+      when :char
+        char_guess(player_input)
+      when :word
+        word_guess(player_input)
       end
-      board.display
     end
   end
-  nil
 end
 
 Game.new.start

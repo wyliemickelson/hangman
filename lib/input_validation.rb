@@ -1,11 +1,14 @@
+require_relative 'game_text.rb'
+
 module Validation
+  include GameText
 
   def get_turn_input
-    puts ">> Enter your letter guess or '1' to save and quit:"
+    puts turn_prompt
     loop do
       input = gets.chomp.downcase
       return input if valid_turn_input(input)
-      puts ">> Invalid input."
+      puts invalid_text
     end
   end
   
@@ -13,16 +16,16 @@ module Validation
     loop do
       input = gets.chomp
       return input if valid_start_input(input)
-      puts ">> Invalid input. Enter a 1 or 2:"
+      puts invalid_start_input_text
     end
   end
 
   def get_save_pos
-    puts ">> Choose a save file by entering its number:"
+    puts choose_save_prompt
     loop do
       input = gets.chomp
       return input if valid_save_input(input)
-      puts ">> Invalid input. Enter a number corresponding to one of the saves."
+      puts invalid_save_text
     end
   end
 
@@ -31,7 +34,7 @@ module Validation
   end
 
   def valid_turn_input(input)
-    input == '1' || board.remaining_letters.include?(input) || (board.goal_word.length == input.length && input.match(/\A[a-zA-Z]*\z/) )
+    input == '1' || board.rem_letters.include?(input) || (board.goal_word.length == input.length && input.match(/\A[a-zA-Z]*\z/) )
   end
 
   def valid_start_input(input)
