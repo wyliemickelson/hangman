@@ -1,5 +1,5 @@
 require_relative 'board.rb'
-require_relative 'validation.rb'
+require_relative 'input_validation.rb'
 
 class Game
   include Validation
@@ -22,6 +22,7 @@ class Game
 
   def start
     board.display
+    # load_save unless new_game?
     until game_over?
       turn
     end
@@ -33,14 +34,9 @@ class Game
     puts ">> The word was: #{board.goal_word}"
   end
 
-  def get_turn_input
-    puts ">> Enter your letter guess or '1' to save: "
-    input = gets.chomp.downcase
-    until valid_turn_input(input)
-      puts "Invalid input."
-      input = gets.chomp.downcase
-    end
-    input
+  def new_game?
+    puts ">> Press 1 for new game, 2 to load a previous save:"
+    get_start_input == '1'
   end
 
   def correct_guess?(char)
