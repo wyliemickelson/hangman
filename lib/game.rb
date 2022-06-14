@@ -25,11 +25,11 @@ class Game
     until game_over?
       turn
     end
-    if board.remaining_guesses == 0
-      puts ">> You lose!"
-    else
-      puts ">> You win!"
-    end
+    calc_winner
+  end
+
+  def calc_winner
+    puts "#{board.remaining_guesses == 0 ? ">> You lose!" : ">> You win!"}"
     puts ">> The word was: #{board.goal_word}"
   end
 
