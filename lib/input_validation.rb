@@ -1,7 +1,7 @@
 module Validation
 
   def get_turn_input
-    puts ">> Enter your letter guess or '1' to save:"
+    puts ">> Enter your letter guess or '1' to save and quit:"
     loop do
       input = gets.chomp.downcase
       return input if valid_turn_input(input)

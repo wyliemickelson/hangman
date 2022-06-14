@@ -1,12 +1,14 @@
 require_relative 'board.rb'
 require_relative 'input_validation.rb'
+require_relative 'save_states.rb'
 
 class Game
   include Validation
+  include SaveStates
   attr_reader :board, :current_action
 
-  def initialize
-    @board = Board.new
+  def initialize(board = Board.new)
+    @board = board
     @current_action = nil
   end
 
@@ -24,9 +26,9 @@ class Game
     board.display
     # load_save unless new_game?
     until game_over?
-      turn
+      break if turn == false
     end
-    calc_winner
+    calc_winner if game_over?
   end
 
   def calc_winner
@@ -51,7 +53,8 @@ class Game
     player_input = get_turn_input
     set_current_action(player_input)
     if current_action == :save
-      #save the game
+      save_current_game(board)
+      return false
     elsif current_action == :guess
       #check if guess is word or character
       if player_input.length == 1
@@ -70,8 +73,8 @@ class Game
       end
       board.display
     end
-  
   end
+  nil
 end
 
 Game.new.start

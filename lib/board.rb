@@ -1,4 +1,5 @@
 require_relative 'dictionary.rb'
+require 'json'
 
 class Board
   attr_reader :goal_word
@@ -13,6 +14,15 @@ class Board
     # testing
     # @goal_word = "hello"
     # @correct_letters = ["h", "e", "l", "o"]
+  end
+
+  def to_json
+    {
+      goal_word: @goal_word,
+      remaining_guesses: @remaining_guesses,
+      remaining_letters: @remaining_letters,
+      correct_letters: @correct_letters
+    }
   end
 
   def add_correct_letter(char)
