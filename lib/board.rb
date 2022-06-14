@@ -10,7 +10,7 @@ class Board
     @remaining_letters = ('a'..'z').to_a
     @correct_letters = []
 
-    # # testing
+    # testing
     # @goal_word = "hello"
     # @correct_letters = ["h", "e", "l", "o"]
   end
@@ -19,7 +19,7 @@ class Board
     @correct_letters << char
   end
 
-  def remove_letter(char)
+  def remove_rem_letter(char)
     @remaining_letters.delete(char)
   end
 

@@ -39,8 +39,12 @@ class Game
     get_start_input == '1'
   end
 
-  def correct_guess?(char)
+  def correct_char_guess?(char)
     board.goal_word.include?(char)
+  end
+
+  def correct_word_guess(word)
+    word == board.goal_word
   end
 
   def turn
@@ -49,11 +53,20 @@ class Game
     if current_action == :save
       #save the game
     elsif current_action == :guess
-      board.remove_letter(player_input)
-      if correct_guess?(player_input)
-        board.add_correct_letter(player_input)
+      #check if guess is word or character
+      if player_input.length == 1
+        board.remove_rem_letter(player_input)
+        if correct_char_guess?(player_input)
+          board.add_correct_letter(player_input)
+        else
+          board.remaining_guesses -= 1
+        end
       else
-        board.remaining_guesses -= 1
+        if correct_word_guess(player_input)
+          player_input.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
+        else
+          board.remaining_guesses -= 1
+        end
       end
       board.display
     end

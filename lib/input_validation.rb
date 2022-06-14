@@ -18,7 +18,7 @@ module Validation
   end
 
   def valid_turn_input(input)
-    input == '1' || board.remaining_letters.include?(input)
+    input == '1' || board.remaining_letters.include?(input) || (board.goal_word.length == input.length && input.match(/\A[a-zA-Z]*\z/) )
   end
 
   def valid_start_input(input)
