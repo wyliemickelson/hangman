@@ -1,6 +1,9 @@
 require "json"
 
 module SaveStates
+
+  @@saves = Dir.entries("saves").reject { |fname| fname == "." || fname == ".." }
+
   def save_current_game(board)
     Dir.mkdir("saves") unless Dir.exists?("saves")
     time = Time.now
@@ -8,7 +11,15 @@ module SaveStates
     File.open("saves/#{save_fname}.json", 'w') { |file| file.write(JSON.pretty_generate(board.to_json)) }
   end
 
-  def load_game(game)
+  def load_save(pos)
+    @board = Board.from_json(File.read("saves/#{@@saves[pos.to_i - 1]}"))
+  end
 
+  def display_saves
+    @@saves.each_with_index { |save, index| puts "#{index + 1}: #{save}" }
+  end
+
+  def no_saves?
+    @@saves.empty?
   end
 end

@@ -5,10 +5,11 @@ require_relative 'save_states.rb'
 class Game
   include Validation
   include SaveStates
-  attr_reader :board, :current_action
+  attr_reader :current_action
+  attr_accessor :board
 
-  def initialize(board = Board.new)
-    @board = board
+  def initialize
+    @board = Board.new
     @current_action = nil
   end
 
@@ -23,8 +24,16 @@ class Game
   end
 
   def start
+    unless new_game?
+      if no_saves?
+        puts ">> No save files found. Starting new game.\n\n"
+      else
+        display_saves
+        pos = get_save_pos
+        load_save(pos)
+      end
+    end
     board.display
-    # load_save unless new_game?
     until game_over?
       break if turn == false
     end

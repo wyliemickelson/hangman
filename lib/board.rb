@@ -5,15 +5,11 @@ class Board
   attr_reader :goal_word
   attr_accessor :remaining_guesses, :remaining_letters, :correct_letters
 
-  def initialize
-    @goal_word = Dictionary.new.words.sample
-    @remaining_guesses = 6
-    @remaining_letters = ('a'..'z').to_a
-    @correct_letters = []
-
-    # testing
-    # @goal_word = "hello"
-    # @correct_letters = ["h", "e", "l", "o"]
+  def initialize(goal_word = Dictionary.new.words.sample, remaining_guesses = 6, remaining_letters = ('a'..'z').to_a, correct_letters = [])
+    @goal_word = goal_word
+    @remaining_guesses = remaining_guesses
+    @remaining_letters = remaining_letters
+    @correct_letters = correct_letters
   end
 
   def to_json
@@ -23,6 +19,11 @@ class Board
       remaining_letters: @remaining_letters,
       correct_letters: @correct_letters
     }
+  end
+
+  def self.from_json(string)
+    data = JSON.load(string)
+    self.new(data["goal_word"], data["remaining_guesses"], data["remaining_letters"], data["correct_letters"])
   end
 
   def add_correct_letter(char)

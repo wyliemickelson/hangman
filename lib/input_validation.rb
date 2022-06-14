@@ -17,6 +17,19 @@ module Validation
     end
   end
 
+  def get_save_pos
+    puts ">> Choose a save file by entering its number:"
+    loop do
+      input = gets.chomp
+      return input if valid_save_input(input)
+      puts ">> Invalid input. Enter a number corresponding to one of the saves."
+    end
+  end
+
+  def valid_save_input(input)
+    input.to_i.between?(1, Dir.entries("saves").length - 2)
+  end
+
   def valid_turn_input(input)
     input == '1' || board.remaining_letters.include?(input) || (board.goal_word.length == input.length && input.match(/\A[a-zA-Z]*\z/) )
   end
