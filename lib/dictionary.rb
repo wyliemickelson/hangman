@@ -9,10 +9,6 @@ class Dictionary
 end
 
 def retrieve_default_words
-  fname = "../word_dict.txt"
-  unless File.file?(fname)
-    server_file = URI.open("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-no-swears.txt")
-    File.open("../word_dict.txt", "w") { |file| file.write(server_file.read) }
-  end
-  File.open(fname, "r") { |file| file.readlines(chomp: true) }
+  url = "https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-no-swears.txt"
+  URI.open(url) { |file| file.readlines(chomp: true) }
 end
