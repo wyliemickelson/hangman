@@ -1,14 +1,15 @@
+require_relative 'color.rb'
 module GameText
   def goal_word_text
     ">> The word was: #{board.goal_word}"
   end
 
-  def new_game_prompt
-    ">> Press 1 for new game, 2 to load a previous save:"
+  def guess_text(correct)
+    correct ? ">> Correct guess!".green : ">> Incorrect guess.".red
   end
 
-  def no_saves_text
-    ">> No save files found. Starting new game."
+  def new_game_prompt
+    ">> Press 1 for new game, 2 to load a previous save:"
   end
 
   def turn_prompt
@@ -19,7 +20,10 @@ module GameText
     ">> Choose a save file by entering its number:"
   end
 
-  #invalid
+  def no_saves_text
+    ">> No save files found. Starting new game."
+  end
+
   def invalid_text
     ">> Invalid input."
   end

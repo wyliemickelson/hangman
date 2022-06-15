@@ -25,16 +25,18 @@ class Game
     board.rem_guesses == 0 || board.goal_word.chars.all? { |char| board.correct_letters.include?(char) }
   end
 
-  def start
-    unless new_game?
-      if no_saves?
-        puts no_saves_text
-      else
-        display_saves
-        pos = get_save_pos
-        load_save(pos)
-      end
+  def load_game
+    if no_saves?
+      puts no_saves_text
+    else
+      display_saves
+      pos = get_save_pos
+      load_save(pos)
     end
+  end
+
+  def start
+    load_game unless new_game?
     until game_over?
       board.display
       break if turn == false
@@ -52,29 +54,21 @@ class Game
     get_start_input == "1"
   end
 
-  def correct_char_guess?(char)
-    board.goal_word.include?(char)
+  def correct_guess?(guess)
+    guess.length == 1 ? board.goal_word.include?(guess) : guess == board.goal_word
   end
 
-  def correct_word_guess(word)
-    word == board.goal_word
-  end
-
-  def char_guess(player_input)
-    board.remove_rem_letter(player_input)
-    if correct_char_guess?(player_input)
-      board.add_correct_letter(player_input)
+  def update_board(guess)
+    is_correct = correct_guess?(guess)
+    if is_correct && guess.length == 1
+      board.add_correct_letter(guess)
+    elsif is_correct
+      guess.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
     else
       board.rem_guesses -= 1
     end
-  end
-
-  def word_guess(player_input)
-    if correct_word_guess(player_input)
-      player_input.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
-    else
-      board.rem_guesses -= 1
-    end
+    board.remove_rem_letter(guess) if guess.length == 1
+    puts guess_text(is_correct)
   end
 
   def turn
@@ -84,14 +78,7 @@ class Game
       save_current_game(board)
       return false
     elsif current_action == :guess
-      case guess_type = (player_input.length == 1 ? :char : :word)
-      when :char
-        char_guess(player_input)
-      when :word
-        word_guess(player_input)
-      end
+      update_board(player_input)
     end
   end
 end
-
-Game.new.start
