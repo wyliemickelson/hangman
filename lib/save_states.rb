@@ -16,6 +16,10 @@ module SaveStates
     @board = Board.from_json(File.read("saves/#{@@saves[pos.to_i - 1]}"))
   end
 
+  def del_save(fname)
+    File.delete("saves/#{fname}") if File.file?("saves/#{fname}")
+  end
+
   def display_saves
     @@saves.each_with_index { |save, index| puts "#{index + 1}: #{save}" }
   end

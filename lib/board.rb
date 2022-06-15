@@ -1,4 +1,5 @@
 require_relative 'dictionary.rb'
+require_relative 'color.rb'
 require 'json'
 
 class Board
@@ -40,7 +41,7 @@ class Board
 
   def display
     puts ">> Available letters: #{rem_letters.join(" ")}\n\n"
-    puts ">> Remaining incorrect guesses: #{rem_guesses}\n\n"
+    puts ">> Remaining incorrect guesses: #{rem_guesses.to_s.yellow}\n\n"
     puts ">> To guess: #{display_goal_word}"
   end
 end

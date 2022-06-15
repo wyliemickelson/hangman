@@ -25,8 +25,7 @@ class Game
       puts no_saves_text
     else
       display_saves
-      pos = get_save_pos
-      load_save(pos)
+      load_save(get_save_pos)
     end
   end
 
