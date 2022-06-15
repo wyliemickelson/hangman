@@ -16,6 +16,10 @@ class Game
     @win = false
   end
 
+  def loss
+    board.rem_guesses == 0
+  end
+
   def load_game
     if no_saves?
       puts no_saves_text
@@ -28,7 +32,7 @@ class Game
 
   def start
     load_game unless new_game?
-    until win || save_game
+    until win || loss || save_game
       board.display
       turn
     end
