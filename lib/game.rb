@@ -21,15 +21,18 @@ class Game
   end
 
   def load_game
+    clear
     if no_saves?
       puts no_saves_text
     else
       display_saves
       load_save(get_save_pos)
     end
+    clear
   end
 
   def start
+    clear
     load_game unless new_game?
     until win || loss || save_game
       board.display
@@ -62,7 +65,8 @@ class Game
     else
       board.rem_guesses -= 1
     end
-    board.remove_rem_letter(guess) if guess.length == 1
+    board.add_used_guess(guess)
+    clear
     puts guess_text(is_correct)
   end
 
