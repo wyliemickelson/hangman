@@ -13,7 +13,10 @@ module Validation
   end
 
   def valid_turn_input(input)
-    input == '1' || board.rem_letters.include?(input) || (board.goal_word.length == input.length && input.match(/\A[a-zA-Z]*\z/) )
+    return true if input == '1'
+    return false if input !~ /\A[a-zA-Z]*\z/
+    return false if board.used_guesses.include?(input)
+    [1, board.goal_word.length].include?(input.length)
   end
   
   def get_start_input
