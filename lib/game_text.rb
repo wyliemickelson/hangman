@@ -4,8 +4,12 @@ module GameText
     ">> The word was: #{board.goal_word}"
   end
 
-  def guess_text(correct)
-    correct ? ">> Correct guess!".green : ">> Incorrect guess.".red
+  def guess_text(is_correct)
+    is_correct ? ">> Correct guess!".green : ">> Incorrect guess.".red
+  end
+
+  def end_text(is_winner)
+    is_winner ? ">> You win!".green : ">> You lose!".red
   end
 
   def new_game_prompt

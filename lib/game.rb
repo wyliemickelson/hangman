@@ -8,21 +8,12 @@ class Game
   include SaveStates
   include GameText
 
-  attr_reader :current_action
-  attr_accessor :board
+  attr_accessor :board, :save_game, :win
 
   def initialize
     @board = Board.new
-    @current_action = nil
-  end
-
-  def set_current_action(input)
-    action = (input == "1" ? :save : :guess)
-    @current_action = action
-  end
-
-  def game_over?
-    board.rem_guesses == 0 || board.goal_word.chars.all? { |char| board.correct_letters.include?(char) }
+    @save_game = false
+    @win = false
   end
 
   def load_game
@@ -37,15 +28,15 @@ class Game
 
   def start
     load_game unless new_game?
-    until game_over?
+    until win || save_game
       board.display
-      break if turn == false
+      turn
     end
-    calc_winner if game_over?
+    calc_winner unless save_game
   end
 
   def calc_winner
-    puts "#{board.rem_guesses == 0 ? ">> You lose!" : ">> You win!"}"
+    puts end_text(win)
     puts goal_word_text
   end
 
@@ -62,8 +53,9 @@ class Game
     is_correct = correct_guess?(guess)
     if is_correct && guess.length == 1
       board.add_correct_letter(guess)
+      self.win = true if board.goal_word.chars.all? { |char| board.correct_letters.include?(char) }
     elsif is_correct
-      guess.chars.each { |char| board.add_correct_letter(char) unless board.correct_letters.include?(char) }
+      self.win = true
     else
       board.rem_guesses -= 1
     end
@@ -72,13 +64,8 @@ class Game
   end
 
   def turn
-    player_input = get_turn_input
-    set_current_action(player_input)
-    if current_action == :save
-      save_current_game(board)
-      return false
-    elsif current_action == :guess
-      update_board(player_input)
-    end
+    p_input = get_turn_input
+    action = (p_input == "1" ? :save : :guess)
+    action == :save ? save_current_game(board) : update_board(p_input)
   end
 end

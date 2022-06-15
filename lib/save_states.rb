@@ -5,6 +5,7 @@ module SaveStates
   @@saves = Dir.entries("saves").reject { |fname| fname == "." || fname == ".." }
 
   def save_current_game(board)
+    self.save_game = true
     Dir.mkdir("saves") unless Dir.exists?("saves")
     time = Time.now
     save_fname =  time.strftime("%m-%d-%Y_%H-%M")
