@@ -4,10 +4,9 @@ require_relative 'hangman_pics.rb'
 require 'json'
 
 class Board
+  include HangmanPics
   attr_reader :goal_word
   attr_accessor :rem_guesses, :correct_letters, :used_guesses
-
-  @@pics = HangmanPics.new
 
   def initialize(goal_word = Dictionary.new.words.sample, rem_guesses = 6, correct_letters = [], used_guesses = [])
     @goal_word = goal_word
@@ -43,7 +42,7 @@ class Board
   end
 
   def display
-    puts @@pics.HANGMANPICS[(rem_guesses - 6).abs]
+    puts pics[(rem_guesses - 6).abs]
     puts "#{">>".blue} Used letters: #{used_guesses.join(" ").magenta}\n\n"
     puts "#{">>".blue} Remaining incorrect guesses: #{rem_guesses.to_s.yellow}\n\n"
     puts "#{">>".blue} To guess: #{display_goal_word}"
