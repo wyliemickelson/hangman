@@ -8,7 +8,13 @@ module Validation
     loop do
       input = gets.chomp.downcase
       return input if valid_turn_input(input)
-      puts invalid_text
+      output = invalid_text
+      if board.used_guesses.include?(input)
+        output = already_guessed_text
+      elsif ![1, board.goal_word.length].include?(input.length)
+        output = invalid_guess_size_text
+      end
+      puts output
     end
   end
 
@@ -25,6 +31,16 @@ module Validation
       return input if ['1', '2'].include?(input)
       puts invalid_start_input_text
     end
+  end
+
+  def get_save_name
+    puts enter_save_name_prompt
+    loop do
+      fname = gets.chomp
+      return fname if fname !~ /[^a-z^A-Z^0-9^_^-]/
+      puts invalid_fname_text
+    end
+
   end
 
   def get_save_pos

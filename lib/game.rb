@@ -27,13 +27,14 @@ class Game
     else
       display_saves
       load_save(get_save_pos)
+      clear
     end
-    clear
   end
 
   def start
     clear
     load_game unless new_game?
+    clear
     until win || loss || save_game
       board.display
       turn
@@ -73,6 +74,6 @@ class Game
   def turn
     p_input = get_turn_input
     action = (p_input == "1" ? :save : :guess)
-    action == :save ? save_current_game(board) : update_board(p_input)
+    action == :save ? save_current_game(board, get_save_name) : update_board(p_input)
   end
 end

@@ -37,19 +37,35 @@ module GameText
     "#{output} Choose a save file by entering its number:"
   end
 
+  def enter_save_name_prompt
+    "#{output} Enter a name for your save: " 
+  end
+
   def no_saves_text
     "#{output} #{"No save files found.".red} Starting new game."
   end
 
+  def already_guessed_text
+    "#{output} #{"Invalid input.".red} You have already guessed that."
+  end
+
+  def invalid_guess_size_text
+    "#{output} #{"Invalid input.".red} Incorrect guess length."
+  end
+
   def invalid_text
-    "#{output} #{"Invalid input.".red}"
+    "#{output} #{"Invalid input.".red} Enter a letter or guess the word with the correct length."
   end
 
   def invalid_start_input_text
-    "#{output} #{invalid_text} Enter a #{"1".magenta} or #{"2".magenta}:"
+    "#{output} #{"Invalid input.".red} Enter a #{"1".magenta} or #{"2".magenta}:"
   end
 
   def invalid_save_text
-    "#{output} #{invalid_text} Enter a number corresponding to one of the saves."
+    "#{output} #{"Invalid input.".red} Enter a number corresponding to one of the saves."
+  end
+
+  def invalid_fname_text
+    "#{output} #{"Invalid Filename:".red} Filenames can only have alphanumerical characters, dashes, or underscores."
   end
 end
