@@ -1,7 +1,7 @@
-require_relative 'dictionary.rb'
-require_relative 'color.rb'
-require_relative 'hangman_pics.rb'
-require 'json'
+require_relative "dictionary.rb"
+require_relative "color.rb"
+require_relative "hangman_pics.rb"
+require "json"
 
 class Board
   include HangmanPics
@@ -20,7 +20,7 @@ class Board
       goal_word: @goal_word,
       rem_guesses: @rem_guesses,
       correct_letters: @correct_letters,
-      used_guesses: @used_guesses
+      used_guesses: @used_guesses,
     }
   end
 

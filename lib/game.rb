@@ -47,6 +47,7 @@ class Game
   end
 
   def calc_winner
+    puts board.display unless win
     puts end_text(win)
     puts goal_word_text
   end
