@@ -8,12 +8,13 @@ class Game
   include SaveStates
   include GameText
 
-  attr_accessor :board, :save_game, :win
+  attr_accessor :board, :save_game, :win, :save_file
 
   def initialize
     @board = Board.new
     @save_game = false
     @win = false
+    @save_file = nil
   end
 
   def loss
@@ -26,7 +27,7 @@ class Game
       puts no_saves_text
     else
       display_saves
-      load_save(get_save_pos)
+      @save_file = load_save(get_save_pos)
       clear
     end
   end

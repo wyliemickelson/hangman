@@ -1,17 +1,18 @@
 require "json"
 
 module SaveStates
-
   @@saves = Dir.exists?("saves") ? Dir.entries("saves").reject { |fname| fname == "." || fname == ".." } : []
 
   def save_current_game(board, fname)
     self.save_game = true
     Dir.mkdir("saves") unless Dir.exists?("saves")
-    File.open("saves/#{fname}.json", 'w') { |file| file.write(JSON.pretty_generate(board.to_json)) }
+    fname = "#{fname}.json" unless fname.include?(".json")
+    File.open("saves/#{fname}", "w") { |file| file.write(JSON.pretty_generate(board.to_json)) }
   end
 
   def load_save(pos)
-    @board = Board.from_json(File.read("saves/#{@@saves[pos.to_i - 1]}"))
+    @board = Board.from_json(File.read("saves/#{@@saves[pos - 1]}"))
+    @@saves[pos - 1]
   end
 
   def del_save(fname)
