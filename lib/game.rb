@@ -35,7 +35,6 @@ class Game
   def start
     clear
     load_game unless new_game?
-    clear
     until win || loss || save_game
       board.display
       turn
