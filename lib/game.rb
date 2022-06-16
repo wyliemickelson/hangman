@@ -40,7 +40,10 @@ class Game
       board.display
       turn
     end
-    calc_winner unless save_game
+    unless save_game
+      calc_winner
+      del_save(save_file)
+    end
   end
 
   def calc_winner
