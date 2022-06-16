@@ -8,7 +8,7 @@ class Board
   attr_reader :goal_word
   attr_accessor :rem_guesses, :correct_letters, :used_guesses
 
-  def initialize(goal_word = Dictionary.new.words.sample, rem_guesses = 8, correct_letters = [], used_guesses = [])
+  def initialize(goal_word = Dictionary.new.words.sample, rem_guesses = 6, correct_letters = [], used_guesses = [])
     @goal_word = goal_word
     @rem_guesses = rem_guesses
     @correct_letters = correct_letters
